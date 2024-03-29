@@ -1,4 +1,7 @@
-import 'package:authentication/api/firestore_api.dart';
+import 'package:authentication/app/app.locator.dart';
+import 'package:authentication/app/app.router.dart';
+import 'package:authentication/models/address.dart';
+import 'package:authentication/services/firestore_service.dart';
 import 'package:authentication/app/app.logger.dart';
 import 'package:authentication/constants/app_strings.dart';
 import 'package:authentication/services/user_service.dart';
@@ -7,16 +10,12 @@ import 'package:places_service/places_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import '../../app/app.locator.dart';
-import '../../app/app.router.dart';
-import '../../models/application_models.dart';
-
 class AddressSelectionViewModel extends FormViewModel {
   final logger = getLogger('AddressSelectionViewModel');
 
   final _placesService = locator<PlacesService>();
   final _dialogService = locator<DialogService>();
-  final _firestoreApi = locator<FirestoreApi>();
+  final _firestoreApi = locator<FirestoreService>();
   final _navigationService = locator<NavigationService>();
   final _userService = locator<UserService>();
 
@@ -53,6 +52,9 @@ class AddressSelectionViewModel extends FormViewModel {
   Future<void> selectAddressSuggestion({
     PlacesAutoCompleteResult? autoCompleteResult,
   }) async {
+    _navigationService.clearStackAndShow(Routes.homeView);
+    return;
+
     PlacesAutoCompleteResult selectedResult = autoCompleteResult ?? _selectedResult!;
 
     logger.i('Selected $selectedResult as the suggestion');
@@ -107,7 +109,7 @@ class AddressSelectionViewModel extends FormViewModel {
 
   // Updates the [BoxInputField] focus state
   void onFocusChanged(bool isFocus) {
-    this.focus = isFocus;
+    focus = isFocus;
     notifyListeners();
   }
 }

@@ -1,3 +1,6 @@
+import 'package:authentication/models/job_post.dart';
+import 'package:authentication/ui/job_detail/job_detail_view.dart';
+import 'package:authentication/ui/job_results/job_results_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -12,9 +15,12 @@ class Routes {
   static const String startUpView = '/';
   static const String addressSelectionView = '/address-selection-view';
   static const String createAccountView = '/create-account-view';
+  static const String createAccountSidelinerView = '/create-account-sideliner-view';
   static const String loginView = '/login-view';
   static const String homeView = '/home-view';
-  static const all = <String>{startUpView, addressSelectionView, createAccountView, loginView, homeView};
+  static const String jobResultsView = '/job-results-view';
+  static const String jobDetailView = '/job-detail-view';
+  static const all = <String>{startUpView, addressSelectionView, createAccountView, loginView, homeView, jobResultsView, jobDetailView};
 }
 
 class StackedRouter extends RouterBase {
@@ -26,6 +32,8 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.createAccountView, page: CreateAccountView),
     RouteDef(Routes.loginView, page: LoginView),
     RouteDef(Routes.homeView, page: HomeView),
+    RouteDef(Routes.jobResultsView, page: JobResultsView),
+    RouteDef(Routes.jobDetailView, page: JobDetailView),
   ];
 
   @override
@@ -34,6 +42,18 @@ class StackedRouter extends RouterBase {
     StartUpView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => const StartUpView(),
+        settings: data,
+      );
+    },
+    JobResultsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => JobResultsView(searchParameters: (data.arguments as JobResultsViewArguments).searchParameters),
+        settings: data,
+      );
+    },
+    JobDetailView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => JobDetailView(jobPost: (data.arguments as JobDetailViewArguments).jobPost),
         settings: data,
       );
     },
@@ -65,14 +85,38 @@ class AddressSelectionViewArguments {
   AddressSelectionViewArguments({this.key});
 }
 
+class JobDetailViewArguments {
+  final Key? key;
+  final JobPost jobPost;
+  JobDetailViewArguments({this.key, required this.jobPost});
+}
+
+class JobResultsViewArguments {
+  final Key? key;
+  final Map<String, String> searchParameters;
+  JobResultsViewArguments({this.key, required this.searchParameters});
+}
+
 // CreateAccountView arguments holder class
 class CreateAccountViewArguments {
   final Key? key;
   CreateAccountViewArguments({this.key});
 }
 
+// CreateAccountSidelinerView arguments holder class
+class CreateAccountSidelinerViewArguments {
+  final Key? key;
+  CreateAccountSidelinerViewArguments({this.key});
+}
+
 // LoginView arguments holder class
 class LoginViewArguments {
   final Key? key;
   LoginViewArguments({this.key});
+}
+
+// LoginView arguments holder class
+class PostsViewArguments {
+  final Key? key;
+  PostsViewArguments({this.key});
 }

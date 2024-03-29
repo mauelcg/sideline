@@ -8,6 +8,7 @@ import '../../app/app.router.dart';
 class CreateAccountViewModel extends AuthenticationViewModel {
   final _firebaseAuthenticationService = locator<FirebaseAuthenticationService>();
   CreateAccountViewModel() : super(successRoute: Routes.addressSelectionView);
+  bool focus = false;
 
   @override
   Future<FirebaseAuthenticationResult> runAuthentication() {
@@ -18,4 +19,10 @@ class CreateAccountViewModel extends AuthenticationViewModel {
   }
 
   void navigateBack() => navigationService.back();
+  void navigateToCreateAccountSideliner() => navigationService.navigateTo(Routes.createAccountSidelinerView);
+  // Updates the [BoxInputField] focus state
+  void onFocusChanged(bool isFocus) {
+    focus = isFocus;
+    notifyListeners();
+  }
 }

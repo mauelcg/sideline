@@ -1,5 +1,5 @@
 import 'package:authentication/exception/firestore_api_exception.dart';
-import 'package:authentication/models/application_models.dart' as app_models;
+import 'package:authentication/models/user.dart' as user;
 import 'package:authentication/services/user_service.dart';
 import 'package:stacked/stacked.dart';
 import '../../app/app.locator.dart';
@@ -52,8 +52,7 @@ abstract class AuthenticationViewModel extends FormViewModel {
     logger.v('authResult.hasError:${authResult.hasError}');
 
     if (!authResult.hasError && authResult.user != null) {
-      final user = authResult.user!;
-      await userService.syncOrCreateUserAccount(user: app_models.User(id: user.uid, email: user.email));
+      await userService.syncOrCreateUserAccount(user: user.User(id: authResult.user!.uid, email: authResult.user!.email));
       navigationService.replaceWith(successRoute);
     } else {
       if (!authResult.hasError && authResult.user == null) {

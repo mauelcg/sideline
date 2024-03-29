@@ -1,7 +1,9 @@
+import 'package:authentication/app/app.bottom_sheet.dart';
 import 'package:authentication/app/app.locator.dart';
 import 'package:authentication/app/app.router.dart';
 import 'package:authentication/firebase_options.dart';
 import 'package:authentication/ui/login/login_view.dart';
+import 'package:authentication/ui/shared/styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -20,7 +22,9 @@ Future main() async {
   }
 
   setupLocator();
-  runApp(MyApp());
+  setupBottomSheetUi();
+
+  runApp(const MyApp());
 }
 
 Future _connectToFirebaseEmulator() async {
@@ -48,6 +52,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        textTheme: TextTheme(
+          bodyLarge: const TextStyle(),
+          bodyMedium: const TextStyle(),
+        ).apply(bodyColor: Colors.black, displayColor: Colors.black),
+        dividerColor: kcCarolinaBlueColor,
       ),
       navigatorKey: StackedService.navigatorKey,
       onGenerateRoute: StackedRouter().onGenerateRoute,
